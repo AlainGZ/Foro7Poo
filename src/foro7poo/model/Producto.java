@@ -78,6 +78,16 @@ public class Producto {
         this.cantidadDisponible = cantidadDisponible;
     }
     
+    /*@Override
+    public String toString(){
+        return"Producto("+codigoProducto+
+                 ", nombre= '"+nombre+'\''+
+                ", descripcion= '"+descripcion+'\''+
+                "precioBase= "+precioBase+
+                "precioVenta= '"+precioVenta+
+                ", categoria= '"+categoria+'\''+
+                ", cantidadDsponible= "+cantidadDisponible;
+    }*/
     
     
 }

@@ -61,4 +61,91 @@ while (rs.next()) {
         }
         return productos;
     }
+
+ public Producto obtenerProductoPorId(int codigoProducto) throws SQLException {
+        String query = "SELECT * FROM Productos WHERE codigoProducto = ?";
+        Producto producto = null;
+        try (Connection conn = DataBaseConexion.getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(query)) {
+            if(conn!=null){
+            pstmt.setInt(1, codigoProducto);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    producto = new Producto(
+                        rs.getInt("codigoProducto"),
+                        rs.getString("nombre"),
+                        rs.getString("descripcion"),
+                        rs.getDouble("precioBase"),
+                        rs.getDouble("precioVenta"),
+                        rs.getString("categoria"),
+                        rs.getInt("cantidadDisponible")
+                    );
+                }else{
+                    System.out.println("No se encontro un producto con ese codigo");
+                }
+            }
+            }else{
+             System.out.println("No se pudo obtener el producto. error de conexion");   
+              }
+        }catch (SQLException e){
+            System.out.println("Error al obtener el producto");
+            System.err.println(e.getMessage());
+        }
+        return producto;
+    }
+
+ public void actualizarProducto(Producto producto) throws SQLException {
+        String sql = "UPDATE Productos SET codigoProducto, nombre = ?, descripcion = ?, precioBase = ?, precioVenta = ?, categoria = ?, cantidadDisponible = ?";
+        try (Connection conn = DataBaseConexion.getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            
+            if(conn!= null){
+                pstmt.setInt(1, producto.getCodigoProducto());
+                pstmt.setString(2, producto.getNombre());
+                pstmt.setString(3, producto.getDescripcion());
+                pstmt.setDouble(4, producto.getPrecioBase());
+                pstmt.setDouble(5, producto.getPrecioVenta());
+                pstmt.setString(6, producto.getCategoria());
+                pstmt.setInt(7, producto.getCantidadDisponible());
+                pstmt.executeUpdate();
+                
+                int rowsUpdated = pstmt.executeUpdate();
+               if(rowsUpdated > 0){
+                    System.out.println("Producto actualizado");
+                }else{
+                    System.out.println("No se encontro un producto con el codigo que digito");
+                }
+            }else{
+                System.out.println("No se pudo actualizar el producto. Problema de conexion");
+            }   
+        }catch(SQLException e){
+            System.out.println("Error al actualizar el registro");
+            System.err.println(e.getMessage());
+        }
+    }
+
+    // Eliminar producto
+    public void eliminarProducto(int codigoProducto){
+        String sql = "UPDATE productos SET cantidadDisponible = 0 WHERE codigoProducto = ?";
+        try(Connection conn = DataBaseConexion.getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql)){
+            
+            if(conn!=null){
+                pstmt.setInt(1, codigoProducto);
+                int rowsUpdated = pstmt.executeUpdate();
+                if(rowsUpdated > 0){
+                    System.out.println("Producto eliminado");
+                }else{
+                    System.out.println("No se encontro un producto con el codigo que digito");
+                }
+            }else{
+                System.out.println("No se pudo eliminar el producto. Problema de conexion");
+            }
+            
+        }catch(SQLException e){
+            System.out.println("Error al eliminar el registro");
+            System.err.println(e.getMessage());
+        }
+        
+    }
 }
