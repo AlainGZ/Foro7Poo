@@ -95,18 +95,19 @@ while (rs.next()) {
     }
 
  public void actualizarProducto(Producto producto) throws SQLException {
-        String sql = "UPDATE Productos SET codigoProducto, nombre = ?, descripcion = ?, precioBase = ?, precioVenta = ?, categoria = ?, cantidadDisponible = ?";
+        String sql = "UPDATE Productos SET  nombre = ?, descripcion = ?, precioBase = ?, precioVenta = ?, categoria = ?, cantidadDisponible = ? where codigoProducto = ?";
         try (Connection conn = DataBaseConexion.getConnection();
                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
             
             if(conn!= null){
-                pstmt.setInt(1, producto.getCodigoProducto());
-                pstmt.setString(2, producto.getNombre());
-                pstmt.setString(3, producto.getDescripcion());
-                pstmt.setDouble(4, producto.getPrecioBase());
-                pstmt.setDouble(5, producto.getPrecioVenta());
-                pstmt.setString(6, producto.getCategoria());
-                pstmt.setInt(7, producto.getCantidadDisponible());
+              
+                pstmt.setString(1, producto.getNombre());
+                pstmt.setString(2, producto.getDescripcion());
+                pstmt.setDouble(3, producto.getPrecioBase());
+                pstmt.setDouble(4, producto.getPrecioVenta());
+                pstmt.setString(5, producto.getCategoria());
+                pstmt.setInt(6, producto.getCantidadDisponible());
+                pstmt.setInt(7, producto.getCodigoProducto());
                 pstmt.executeUpdate();
                 
                 int rowsUpdated = pstmt.executeUpdate();
@@ -122,6 +123,7 @@ while (rs.next()) {
             System.out.println("Error al actualizar el registro");
             System.err.println(e.getMessage());
         }
+        return;
     }
 
     // Eliminar producto
@@ -146,6 +148,6 @@ while (rs.next()) {
             System.out.println("Error al eliminar el registro");
             System.err.println(e.getMessage());
         }
-        
+        return;
     }
 }
