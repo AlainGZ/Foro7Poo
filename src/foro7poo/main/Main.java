@@ -20,7 +20,7 @@ public class Main {
             System.out.println("3. Consultar Por Producto");
             System.out.println("4. Actualizar Producto");
             System.out.println("5. Eliminar Producto");
-            System.out.println("6. Salir");
+            System.out.println("6. Salir.");
             System.out.print("Selecciona una opción: ");
             int opcion = scanner.nextInt();
 switch (opcion) {
